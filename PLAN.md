@@ -11,10 +11,10 @@
     - [X] 新規メモ入力エリア (`<textarea id="new-memo-input">`)
     - [X] メモ追加ボタン (`<button id="add-memo">`)
     - [X] 基本的な CSS レイアウト (レスポンシブ考慮)
-- [ ] **3. File System API 連携**
-    - [ ] ファイル選択ボタンのイベントリスナー実装 (`showOpenFilePicker`)
-    - [ ] 新規ファイル作成ボタンのイベントリスナー実装 (`showSaveFilePicker`)
-    - [ ] 取得したファイルハンドルを保持する変数 (`currentFileHandle`)
+- [X] **3. File System API 連携**
+    - [X] ファイル選択ボタンのイベントリスナー実装 (`showOpenFilePicker`)
+    - [X] 新規ファイル作成ボタンのイベントリスナー実装 (`showSaveFilePicker`)
+    - [X] 取得したファイルハンドルを保持する変数 (`currentFileHandle`)
 - [ ] **4. メモの解析と表示**
     - [ ] ファイル読み込み関数 (`readFileContent(fileHandle)`)
     - [ ] Markdown リスト形式の解析関数 (`parseMemos(content)`)
