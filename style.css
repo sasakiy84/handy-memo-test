@@ -63,6 +63,20 @@ button:focus {
     outline: none; /* Remove default focus outline if providing custom */
 }
 
+/* Style for buttons with icons */
+button .material-icons-outlined {
+    margin-right: var(--spacing-small); /* Space between icon and text */
+    font-size: 1.2em; /* Slightly larger icon */
+    vertical-align: middle; /* Align icon with text */
+    line-height: 1; /* Prevent extra space */
+}
+
+button { /* Adjust button display for icon alignment */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
 textarea {
     width: 100%;
     padding: var(--spacing-small);
@@ -155,24 +169,23 @@ footer {
 
 /* Responsive Layout */
 @media (min-width: 768px) { /* Apply grid layout on larger screens */
-    main {
-        /* Example: Two-column layout for larger screens */
-        /* grid-template-columns: 1fr 1fr; */
-        /* Adjust grid areas as needed for a better layout */
-    }
-
-    /* You might want to arrange sections differently on larger screens */
-    /* Example:
     .file-controls { grid-area: file; }
     .memo-display { grid-area: display; }
     .memo-input { grid-area: input; }
 
     main {
+        grid-template-columns: 1fr 1fr; /* Two equal columns */
         grid-template-areas:
-            "file file"
-            "display input";
+            "file file"      /* File controls span both columns */
+            "display input"; /* Memo display left, input right */
+        gap: var(--spacing-large);
     }
-    */
+
+    /* Adjust margin for items within the grid */
+    main > section {
+        margin-bottom: 0; /* Remove bottom margin as gap handles spacing */
+    }
 }
 
 /* Add more specific styles later based on PLAN.md step 7 */
+/* Consider container queries if components need to adapt independently */

@@ -13,6 +13,9 @@ const addMemoButton = document.getElementById('add-memo'); // Needed later
 let currentFileHandle = null;
 let memos = []; // Array to hold parsed memos
 
+// Local Storage Key
+const LAST_FILE_NAME_KEY = 'handyMemoLastFileName';
+
 // --- Function Definitions ---
 
 /**
@@ -52,6 +55,7 @@ async function handleSelectFile() {
         currentFileHandle = fileHandle;
         currentFileHandle = fileHandle;
         updateCurrentFileName(currentFileHandle.name);
+        saveLastFileName(currentFileHandle.name); // Save history
         console.log('File selected:', currentFileHandle.name);
         // Read file content and display memos
         await readFileAndDisplayMemos();
@@ -87,6 +91,7 @@ async function handleCreateFile() {
         });
         currentFileHandle = fileHandle;
         updateCurrentFileName(currentFileHandle.name);
+        saveLastFileName(currentFileHandle.name); // Save history
         console.log('File created/selected for saving:', currentFileHandle.name);
         // TODO: Optionally write initial content or just prepare for adding memos
         // Clear memo display as it's a new file
@@ -314,8 +319,37 @@ async function handleAddMemo() {
     }
 }
 
+/**
+ * Saves the name of the last successfully opened/created file to localStorage.
+ * @param {string} fileName - The name of the file.
+ */
+function saveLastFileName(fileName) {
+    try {
+        localStorage.setItem(LAST_FILE_NAME_KEY, fileName);
+        console.log(`Saved last file name to localStorage: ${fileName}`);
+    } catch (error) {
+        console.error('Error saving file name to localStorage:', error);
+        // Handle potential storage errors (e.g., quota exceeded)
+    }
+}
 
-// (Implement functions based on PLAN.md steps 6, 10)
+/**
+ * Loads the name of the last used file from localStorage.
+ * @returns {string | null} The file name, or null if not found or error.
+ */
+function loadLastFileName() {
+    try {
+        const fileName = localStorage.getItem(LAST_FILE_NAME_KEY);
+        console.log(`Loaded last file name from localStorage: ${fileName}`);
+        return fileName;
+    } catch (error) {
+        console.error('Error loading file name from localStorage:', error);
+        return null;
+    }
+}
+
+
+// (Implement functions based on PLAN.md step 10)
 
 // --- Event Listeners ---
 selectFileButton.addEventListener('click', handleSelectFile);
@@ -323,6 +357,37 @@ createFileButton.addEventListener('click', handleCreateFile);
 addMemoButton.addEventListener('click', handleAddMemo);
 
 // --- Initial Setup ---
-// (Code to run on page load, e.g., load history from localStorage - step 6)
+/**
+ * Initializes the application on page load.
+ */
+function initializeApp() {
+    console.log("Handy Memo app.js loaded. Initializing...");
 
-console.log("Handy Memo app.js loaded and initialized.");
+    // Load last file name and update UI (but don't open the file)
+    const lastFileName = loadLastFileName();
+    if (lastFileName) {
+        // Display the name, but indicate it's not actively open yet
+        currentFileNameSpan.textContent = `最後に使用したファイル: ${lastFileName} (開くには選択してください)`;
+        currentFileNameSpan.style.fontStyle = 'italic';
+    } else {
+        updateCurrentFileName(null); // Set default message
+    }
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+                console.log('[App] Service Worker registered successfully with scope:', registration.scope);
+            })
+            .catch((error) => {
+                console.error('[App] Service Worker registration failed:', error);
+            });
+    } else {
+        console.warn('[App] Service Worker is not supported in this browser.');
+    }
+
+    // Other initial setup tasks can go here
+}
+
+// Run initialization when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', initializeApp);
