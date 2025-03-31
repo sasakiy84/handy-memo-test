@@ -269,6 +269,9 @@ async function appendToFile(fileHandle, textToAppend) {
 
     // Write the new content
     await writable.write(contentToAppend);
+    const accessHandle = await file.createSyncAccessHandle();
+    accessHandle.flush();
+    accessHandle.close();
 
     // Close the file and write the changes.
     await writable.close();
