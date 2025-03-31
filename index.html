@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handy Memo</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- PWA Manifest (後で作成) -->
+    <!-- <link rel="manifest" href="manifest.json"> -->
+    <!-- Material Icons (後で導入) -->
+    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+</head>
+<body>
+    <header>
+        <h1>Handy Memo</h1>
+    </header>
+
+    <main>
+        <section class="file-controls">
+            <button id="select-file">ファイルを開く</button>
+            <button id="create-file">新規ファイル作成</button>
+            <span id="current-file-name">ファイルが選択されていません</span>
+        </section>
+
+        <section class="memo-display">
+            <h2>メモ一覧</h2>
+            <div id="memo-list">
+                <!-- メモはここに表示されます -->
+            </div>
+        </section>
+
+        <section class="memo-input">
+            <h2>新しいメモ</h2>
+            <textarea id="new-memo-input" rows="4" placeholder="メモを入力..."></textarea>
+            <button id="add-memo">メモを追加</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Handy Memo</p>
+    </footer>
+
+    <script src="app.js"></script>
+    <!-- Service Worker 登録 (後で実装) -->
+    <!--
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => console.log('Service Worker registered with scope:', registration.scope))
+                .catch(error => console.error('Service Worker registration failed:', error));
+        }
+    </script>
+    -->
+</body>
+</html>

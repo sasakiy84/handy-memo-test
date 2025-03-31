@@ -1,0 +1,55 @@
+# handy-memo 実装計画 (TODO)
+
+- [X] **1. プロジェクト基本構造設定**
+    - [X] `index.html` 作成 (基本的な HTML 構造)
+    - [X] `style.css` 作成 (緑テーマ、CSS変数使用)
+    - [X] `app.js` 作成 (空のファイル)
+- [ ] **2. UI レイアウト実装**
+    - [ ] ファイル選択ボタン (`<button id="select-file">`)
+    - [ ] 新規ファイル作成ボタン (`<button id="create-file">`)
+    - [ ] メモ表示エリア (`<div id="memo-list">`)
+    - [ ] 新規メモ入力エリア (`<textarea id="new-memo-input">`)
+    - [ ] メモ追加ボタン (`<button id="add-memo">`)
+    - [ ] 基本的な CSS レイアウト (レスポンシブ考慮)
+- [ ] **3. File System API 連携**
+    - [ ] ファイル選択ボタンのイベントリスナー実装 (`showOpenFilePicker`)
+    - [ ] 新規ファイル作成ボタンのイベントリスナー実装 (`showSaveFilePicker`)
+    - [ ] 取得したファイルハンドルを保持する変数 (`currentFileHandle`)
+- [ ] **4. メモの解析と表示**
+    - [ ] ファイル読み込み関数 (`readFileContent(fileHandle)`)
+    - [ ] Markdown リスト形式の解析関数 (`parseMemos(content)`)
+        - `- YYYY-MM-DDTHH:MM:SS メモ内容` の形式をパース
+    - [ ] メモ表示エリア更新関数 (`displayMemos(memos)`)
+        - 逆時系列 (新しいものが上) で表示
+- [ ] **5. メモ作成機能**
+    - [ ] メモ追加ボタンのイベントリスナー実装
+    - [ ] 現在時刻取得と指定形式 (`YYYY-MM-DDTHH:MM:SS`) へのフォーマット
+    - [ ] 新規メモ文字列の作成
+    - [ ] ファイル追記関数 (`appendToFile(fileHandle, text)`)
+    - [ ] 追記後のメモリスト再表示
+- [ ] **6. ローカルストレージ履歴**
+    - [ ] ファイルハンドルを保存する関数 (`saveFileHandleHistory(fileHandle)`) - IndexedDB の方が適切かもしれないが、まずは `localStorage` で試す (シリアライズ不可のため、実際にはファイル名やパス情報などを保存することになる)
+    - [ ] 起動時に履歴を読み込む関数 (`loadLastFileHandle()`)
+    - [ ] 履歴からファイルハンドルを再取得するロジック (ユーザー操作が必要になる可能性)
+- [ ] **7. CSS スタイリング**
+    - [ ] モダン CSS 機能の活用 (Grid, Custom Properties, `:has()`, etc.)
+    - [ ] Material Icons の導入と適用
+    - [ ] シンプルで落ち着いたデザインの適用
+    - [ ] レスポンシブ対応の強化
+- [ ] **8. PWA 機能: manifest.json**
+    - [ ] `manifest.json` ファイル作成 (アプリ名, アイコン, start_url, display, etc.)
+    - [ ] `index.html` から `manifest.json` をリンク
+- [ ] **9. PWA 機能: Service Worker**
+    - [ ] `sw.js` ファイル作成
+    - [ ] `install` イベントリスナーで基本リソース (HTML, CSS, JS) をキャッシュ
+    - [ ] `fetch` イベントリスナーでキャッシュ優先またはネットワークフォールバック
+    - [ ] `app.js` で Service Worker を登録
+- [ ] **10. エラーハンドリング**
+    - [ ] File System API の権限エラー処理
+    - [ ] ファイル読み書きエラー処理
+    - [ ] ユーザーへのエラーメッセージ表示
+- [ ] **11. リファインメントとテスト**
+    - [ ] 全体的な動作確認
+    - [ ] UI/UX の微調整
+    - [ ] バグ修正
+    - [ ] クロスブラウザ/デバイスでのテスト
