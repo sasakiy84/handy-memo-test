@@ -15,11 +15,11 @@
     - [X] ファイル選択ボタンのイベントリスナー実装 (`showOpenFilePicker`)
     - [X] 新規ファイル作成ボタンのイベントリスナー実装 (`showSaveFilePicker`)
     - [X] 取得したファイルハンドルを保持する変数 (`currentFileHandle`)
-- [ ] **4. メモの解析と表示**
-    - [ ] ファイル読み込み関数 (`readFileContent(fileHandle)`)
-    - [ ] Markdown リスト形式の解析関数 (`parseMemos(content)`)
+- [X] **4. メモの解析と表示**
+    - [X] ファイル読み込み関数 (`readFileContent(fileHandle)`)
+    - [X] Markdown リスト形式の解析関数 (`parseMemos(content)`)
         - `- YYYY-MM-DDTHH:MM:SS メモ内容` の形式をパース
-    - [ ] メモ表示エリア更新関数 (`displayMemos(memos)`)
+    - [X] メモ表示エリア更新関数 (`displayMemos(memos)`)
         - 逆時系列 (新しいものが上) で表示
 - [ ] **5. メモ作成機能**
     - [ ] メモ追加ボタンのイベントリスナー実装

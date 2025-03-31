@@ -50,10 +50,11 @@ async function handleSelectFile() {
             multiple: false, // Only allow selecting one file
         });
         currentFileHandle = fileHandle;
+        currentFileHandle = fileHandle;
         updateCurrentFileName(currentFileHandle.name);
         console.log('File selected:', currentFileHandle.name);
-        // TODO: Read file content and display memos (Step 4)
-        // await readFileAndDisplayMemos();
+        // Read file content and display memos
+        await readFileAndDisplayMemos();
     } catch (error) {
         // Handle errors, including the user canceling the picker
         if (error.name === 'AbortError') {
@@ -105,7 +106,124 @@ async function handleCreateFile() {
     }
 }
 
-// (Implement functions based on PLAN.md steps 4, 5, 6, 10)
+
+/**
+ * Reads the content of the current file handle, parses it, and displays the memos.
+ */
+async function readFileAndDisplayMemos() {
+    if (!currentFileHandle) {
+        console.warn('No file selected.');
+        memoListDiv.innerHTML = '<p>ファイルを選択してください。</p>'; // Inform user
+        memos = [];
+        return;
+    }
+
+    try {
+        const content = await readFileContent(currentFileHandle);
+        memos = parseMemos(content);
+        displayMemos(memos);
+        console.log(`Read and displayed ${memos.length} memos.`);
+    } catch (error) {
+        console.error('Error reading or displaying file content:', error);
+        alert(`ファイル内容の読み込みまたは表示エラー: ${error.message}`);
+        memoListDiv.innerHTML = '<p style="color: var(--color-error);">メモの読み込みに失敗しました。</p>';
+        memos = []; // Clear memos on error
+    }
+}
+
+/**
+ * Reads the text content of a file handle.
+ * @param {FileSystemFileHandle} fileHandle - The handle to the file.
+ * @returns {Promise<string>} The text content of the file.
+ */
+async function readFileContent(fileHandle) {
+    const file = await fileHandle.getFile();
+    return await file.text();
+}
+
+/**
+ * Parses the raw text content into an array of memo objects.
+ * Expected format per line: "- YYYY-MM-DDTHH:MM:SS Memo content"
+ * @param {string} content - The raw text content from the file.
+ * @returns {Array<{timestamp: Date, text: string}>} An array of memo objects.
+ */
+function parseMemos(content) {
+    const lines = content.split('\n');
+    const parsedMemos = [];
+    // Regex to capture timestamp and memo text
+    // Allows for optional space after '-' and captures the rest as text
+    const memoRegex = /^- ?(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}) (.*)$/;
+
+    for (const line of lines) {
+        const trimmedLine = line.trim();
+        if (!trimmedLine) continue; // Skip empty lines
+
+        const match = trimmedLine.match(memoRegex);
+        if (match) {
+            const timestampStr = match[1];
+            const text = match[2].trim(); // Trim trailing spaces from memo text
+            try {
+                const timestamp = new Date(timestampStr);
+                // Check if the date is valid (Date constructor can be lenient)
+                if (!isNaN(timestamp.getTime())) {
+                    parsedMemos.push({ timestamp, text });
+                } else {
+                    console.warn(`Invalid date format found: "${timestampStr}" in line: "${line}"`);
+                }
+            } catch (e) {
+                console.warn(`Error parsing date: "${timestampStr}" in line: "${line}"`, e);
+            }
+        } else {
+            // Handle lines that don't match the expected format (optional)
+            // Could potentially treat them as continuation lines or log a warning
+            console.log(`Skipping line (does not match format): "${line}"`);
+        }
+    }
+    return parsedMemos;
+}
+
+/**
+ * Displays the memos in the UI, sorted by timestamp descending (newest first).
+ * @param {Array<{timestamp: Date, text: string}>} memosToDisplay - The array of memo objects.
+ */
+function displayMemos(memosToDisplay) {
+    // Sort memos: newest first
+    memosToDisplay.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+
+    memoListDiv.innerHTML = ''; // Clear previous content
+
+    if (memosToDisplay.length === 0) {
+        memoListDiv.innerHTML = '<p>メモはありません。</p>';
+        return;
+    }
+
+    const list = document.createElement('ul');
+    list.style.listStyle = 'none'; // Remove default bullet points
+    list.style.padding = '0';
+
+    memosToDisplay.forEach(memo => {
+        const listItem = document.createElement('li');
+
+        const timestampSpan = document.createElement('span');
+        timestampSpan.className = 'memo-timestamp'; // For styling
+        // Format timestamp for display (e.g., YYYY/MM/DD HH:MM)
+        timestampSpan.textContent = memo.timestamp.toLocaleString('ja-JP', {
+            year: 'numeric', month: '2-digit', day: '2-digit',
+            hour: '2-digit', minute: '2-digit'
+        });
+
+        const textNode = document.createTextNode(memo.text); // Use textNode for safety
+
+        listItem.appendChild(timestampSpan);
+        listItem.appendChild(textNode);
+        list.appendChild(listItem);
+    });
+
+    memoListDiv.appendChild(list);
+}
+
+
+// (Implement functions based on PLAN.md steps 5, 6, 10)
 
 // --- Event Listeners ---
 selectFileButton.addEventListener('click', handleSelectFile);
