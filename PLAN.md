@@ -4,13 +4,13 @@
     - [X] `index.html` 作成 (基本的な HTML 構造)
     - [X] `style.css` 作成 (緑テーマ、CSS変数使用)
     - [X] `app.js` 作成 (空のファイル)
-- [ ] **2. UI レイアウト実装**
-    - [ ] ファイル選択ボタン (`<button id="select-file">`)
-    - [ ] 新規ファイル作成ボタン (`<button id="create-file">`)
-    - [ ] メモ表示エリア (`<div id="memo-list">`)
-    - [ ] 新規メモ入力エリア (`<textarea id="new-memo-input">`)
-    - [ ] メモ追加ボタン (`<button id="add-memo">`)
-    - [ ] 基本的な CSS レイアウト (レスポンシブ考慮)
+- [X] **2. UI レイアウト実装**
+    - [X] ファイル選択ボタン (`<button id="select-file">`)
+    - [X] 新規ファイル作成ボタン (`<button id="create-file">`)
+    - [X] メモ表示エリア (`<div id="memo-list">`)
+    - [X] 新規メモ入力エリア (`<textarea id="new-memo-input">`)
+    - [X] メモ追加ボタン (`<button id="add-memo">`)
+    - [X] 基本的な CSS レイアウト (レスポンシブ考慮)
 - [ ] **3. File System API 連携**
     - [ ] ファイル選択ボタンのイベントリスナー実装 (`showOpenFilePicker`)
     - [ ] 新規ファイル作成ボタンのイベントリスナー実装 (`showSaveFilePicker`)

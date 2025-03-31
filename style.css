@@ -93,6 +93,12 @@ footer {
     box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Subtle shadow */
 }
 
+main {
+    display: grid;
+    grid-template-columns: 1fr; /* Default to single column */
+    gap: var(--spacing-large);
+}
+
 header {
     border-bottom: 2px solid var(--color-primary);
 }
@@ -125,6 +131,48 @@ footer {
     padding: var(--spacing-medium);
     margin-top: var(--spacing-small);
     border-radius: 4px;
+    background-color: var(--color-surface); /* Ensure background for list items */
+}
+
+#memo-list li {
+    margin-bottom: var(--spacing-small);
+    padding-bottom: var(--spacing-small);
+    border-bottom: 1px dashed var(--color-border); /* Separator */
+}
+
+#memo-list li:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+#memo-list .memo-timestamp {
+    font-size: 0.85em;
+    color: var(--color-text-muted);
+    display: block; /* Put timestamp on its own line */
+    margin-bottom: 0.2em;
+}
+
+/* Responsive Layout */
+@media (min-width: 768px) { /* Apply grid layout on larger screens */
+    main {
+        /* Example: Two-column layout for larger screens */
+        /* grid-template-columns: 1fr 1fr; */
+        /* Adjust grid areas as needed for a better layout */
+    }
+
+    /* You might want to arrange sections differently on larger screens */
+    /* Example:
+    .file-controls { grid-area: file; }
+    .memo-display { grid-area: display; }
+    .memo-input { grid-area: input; }
+
+    main {
+        grid-template-areas:
+            "file file"
+            "display input";
+    }
+    */
 }
 
 /* Add more specific styles later based on PLAN.md step 7 */
