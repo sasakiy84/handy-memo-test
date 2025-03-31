@@ -222,13 +222,105 @@ function displayMemos(memosToDisplay) {
     memoListDiv.appendChild(list);
 }
 
+/**
+ * Formats a Date object into 'YYYY-MM-DDTHH:MM:SS' format.
+ * @param {Date} date - The date object to format.
+ * @returns {string} The formatted timestamp string.
+ */
+function formatTimestamp(date) {
+    const YYYY = date.getFullYear();
+    const MM = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const DD = String(date.getDate()).padStart(2, '0');
+    const HH = String(date.getHours()).padStart(2, '0');
+    const mm = String(date.getMinutes()).padStart(2, '0');
+    const SS = String(date.getSeconds()).padStart(2, '0');
+    return `${YYYY}-${MM}-${DD}T${HH}:${mm}:${SS}`;
+}
 
-// (Implement functions based on PLAN.md steps 5, 6, 10)
+/**
+ * Appends text to the file associated with the given handle.
+ * Adds a newline before the text if the file is not empty.
+ * @param {FileSystemFileHandle} fileHandle - The handle to the file.
+ * @param {string} textToAppend - The text to append.
+ * @returns {Promise<void>}
+ */
+async function appendToFile(fileHandle, textToAppend) {
+    // Create a writable stream
+    const writable = await fileHandle.createWritable({ keepExistingData: true }); // Keep existing data!
+
+    // Get the current size to determine if we need a preceding newline
+    const file = await fileHandle.getFile();
+    let contentToAppend = textToAppend;
+    if (file.size > 0) {
+        // Check if the file ends with a newline, add one if not
+        const currentContent = await file.text();
+        if (!currentContent.endsWith('\n')) {
+            contentToAppend = '\n' + textToAppend;
+        }
+    }
+
+    // Seek to the end of the file
+    await writable.seek(file.size);
+
+    // Write the new content
+    await writable.write(contentToAppend);
+
+    // Close the file and write the changes.
+    await writable.close();
+    console.log('Appended text to file:', fileHandle.name);
+}
+
+/**
+ * Handles adding a new memo.
+ */
+async function handleAddMemo() {
+    const memoText = newMemoInput.value.trim();
+
+    if (!currentFileHandle) {
+        alert('メモを追加するファイルを選択または作成してください。');
+        return;
+    }
+
+    if (!memoText) {
+        alert('メモ内容を入力してください。');
+        newMemoInput.focus(); // Focus the input field
+        return;
+    }
+
+    try {
+        const timestamp = new Date();
+        const formattedTimestamp = formatTimestamp(timestamp);
+        const newMemoString = `- ${formattedTimestamp} ${memoText}`;
+
+        // Disable button while writing
+        addMemoButton.disabled = true;
+        addMemoButton.textContent = '追加中...';
+
+        await appendToFile(currentFileHandle, newMemoString);
+
+        // Clear the input field
+        newMemoInput.value = '';
+
+        // Refresh the memo list
+        await readFileAndDisplayMemos();
+
+    } catch (error) {
+        console.error('Error adding memo:', error);
+        alert(`メモの追加に失敗しました: ${error.message}`);
+    } finally {
+        // Re-enable button
+        addMemoButton.disabled = false;
+        addMemoButton.textContent = 'メモを追加';
+    }
+}
+
+
+// (Implement functions based on PLAN.md steps 6, 10)
 
 // --- Event Listeners ---
 selectFileButton.addEventListener('click', handleSelectFile);
 createFileButton.addEventListener('click', handleCreateFile);
-// (Add event listeners based on PLAN.md step 5)
+addMemoButton.addEventListener('click', handleAddMemo);
 
 // --- Initial Setup ---
 // (Code to run on page load, e.g., load history from localStorage - step 6)

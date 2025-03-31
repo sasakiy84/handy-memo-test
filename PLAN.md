@@ -21,12 +21,12 @@
         - `- YYYY-MM-DDTHH:MM:SS メモ内容` の形式をパース
     - [X] メモ表示エリア更新関数 (`displayMemos(memos)`)
         - 逆時系列 (新しいものが上) で表示
-- [ ] **5. メモ作成機能**
-    - [ ] メモ追加ボタンのイベントリスナー実装
-    - [ ] 現在時刻取得と指定形式 (`YYYY-MM-DDTHH:MM:SS`) へのフォーマット
-    - [ ] 新規メモ文字列の作成
-    - [ ] ファイル追記関数 (`appendToFile(fileHandle, text)`)
-    - [ ] 追記後のメモリスト再表示
+- [X] **5. メモ作成機能**
+    - [X] メモ追加ボタンのイベントリスナー実装
+    - [X] 現在時刻取得と指定形式 (`YYYY-MM-DDTHH:MM:SS`) へのフォーマット
+    - [X] 新規メモ文字列の作成
+    - [X] ファイル追記関数 (`appendToFile(fileHandle, text)`)
+    - [X] 追記後のメモリスト再表示
 - [ ] **6. ローカルストレージ履歴**
     - [ ] ファイルハンドルを保存する関数 (`saveFileHandleHistory(fileHandle)`) - IndexedDB の方が適切かもしれないが、まずは `localStorage` で試す (シリアライズ不可のため、実際にはファイル名やパス情報などを保存することになる)
     - [ ] 起動時に履歴を読み込む関数 (`loadLastFileHandle()`)
